@@ -24,24 +24,23 @@ public class Main {
             } else {
                 newList.add(right.pop());
                 tookRight++;
-            }
+            }}
             ququ.add(newList);
 
-        }
+
         return inversions;
     }
 
     public static int MergeFindInversions(LinkedList<LinkedList<Integer>> ququ) {
         int inversions = 0;
-        int halfSize = ququ.size() / 2;
-
+        LinkedList<Integer> last = ququ.getLast();
         while (ququ.size() > 1) {
-            if (halfSize > 0) {
+            if (ququ.peek()!=last) {
                 inversions += merge(ququ);
-                halfSize--;
             } else {
                 ququ.addFirst(ququ.removeLast());
-                halfSize = ququ.size() / 2;
+                inversions += merge(ququ);
+                last = ququ.getLast();
             }
 
         }
