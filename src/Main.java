@@ -2,8 +2,8 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
-    public static int merge(LinkedList<LinkedList<Integer>> ququ) {
-        int inversions = 0;
+    public static long merge(LinkedList<LinkedList<Integer>> ququ) {
+        long inversions = 0;
         LinkedList<Integer> left = ququ.pop();
         LinkedList<Integer> right = ququ.pop();
         LinkedList<Integer> newList = new LinkedList<>();
@@ -31,16 +31,23 @@ public class Main {
         return inversions;
     }
 
-    public static int MergeFindInversions(LinkedList<LinkedList<Integer>> ququ) {
-        int inversions = 0;
+    public static long MergeFindInversions(LinkedList<LinkedList<Integer>> ququ) {
+        long inversions = 0;
+        int halfSize= ququ.size()/2;
         LinkedList<Integer> last = ququ.getLast();
         while (ququ.size() > 1) {
-            if (ququ.peek()!=last) {
+            if (ququ.peek() != last) {
+            if (halfSize>0) {
                 inversions += merge(ququ);
+                halfSize--;} else {
+                last = ququ.getLast();
+                halfSize= ququ.size()/2;
+            }
             } else {
                 ququ.addFirst(ququ.removeLast());
                 inversions += merge(ququ);
                 last = ququ.getLast();
+                halfSize= ququ.size()/2;
             }
 
         }
@@ -56,7 +63,7 @@ public class Main {
             lilQueue.add(in.nextInt());
             queue.add(lilQueue);
         }
-        int t = MergeFindInversions(queue);
+        long t = MergeFindInversions(queue);
 
         System.out.println(t);
     }
