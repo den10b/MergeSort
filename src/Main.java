@@ -2,40 +2,47 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
+    public static int merge(LinkedList<LinkedList<Integer>> ququ) {
+        int inversions = 0;
+        LinkedList<Integer> left = ququ.pop();
+        LinkedList<Integer> right = ququ.pop();
+        LinkedList<Integer> newList = new LinkedList<>();
+        int tookRight = 0;
+        while (left.size() > 0 && right.size() > 0) {
+            if (left.peek() <= right.peek()) {
+                newList.add(left.pop());
+                inversions += tookRight;
+            } else {
+                newList.add(right.pop());
+                tookRight++;
+            }
+        }
+        while (left.size() > 0 || right.size() > 0) {
+            if (left.size() > 0) {
+                newList.add(left.pop());
+                inversions += tookRight;
+            } else {
+                newList.add(right.pop());
+                tookRight++;
+            }
+            ququ.add(newList);
+
+        }
+        return inversions;
+    }
 
     public static int MergeFindInversions(LinkedList<LinkedList<Integer>> ququ) {
         int inversions = 0;
-        LinkedList<Integer> end = new LinkedList<>();
-        if ((ququ.size() & 1) != 0) {
-            end = ququ.removeLast();
-        }
+        int halfSize = ququ.size() / 2;
+
         while (ququ.size() > 1) {
-                LinkedList<Integer> left = ququ.pop();
-                LinkedList<Integer> right = ququ.pop();
-                LinkedList<Integer> newList = new LinkedList<>();
-                int tookRight = 0;
-                while (left.size() > 0 && right.size() > 0) {
-                    if (left.peek() <= right.peek()) {
-                        newList.add(left.pop());
-                        inversions += tookRight;
-                    } else {
-                        newList.add(right.pop());
-                        tookRight++;
-                    }
-                }
-                while (left.size() > 0 || right.size() > 0) {
-                    if (left.size() > 0) {
-                        newList.add(left.pop());
-                        inversions += tookRight;
-                    } else {
-                        newList.add(right.pop());
-                        tookRight++;
-                    }
-                }
-                ququ.add(newList);
-if ((ququ.size()==1) &(!(end.isEmpty()))){
-    ququ.add(end);
-}
+            if (halfSize > 0) {
+                inversions += merge(ququ);
+                halfSize--;
+            } else {
+                ququ.addFirst(ququ.removeLast());
+                halfSize = ququ.size() / 2;
+            }
 
         }
         return inversions;
